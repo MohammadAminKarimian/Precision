@@ -128,6 +128,19 @@ target_include_directories(
 
 set(SKSE_SUPPORT_XBYAK ON)
 
+# Check if the environment variable is defined and points to a valid directory
+if(NOT DEFINED ENV{CommonLibSSEPath_NG})
+    message(FATAL_ERROR "CommonLibSSEPath_NG environment variable is not defined!")
+endif()
+
+if(NOT EXISTS "$ENV{CommonLibSSEPath_NG}")
+    message(FATAL_ERROR "CommonLibSSEPath_NG points to non-existent directory: $ENV{CommonLibSSEPath_NG}")
+endif()
+
+if(NOT EXISTS "$ENV{CommonLibSSEPath_NG}/CMakeLists.txt")
+    message(FATAL_ERROR "CommonLibSSEPath_NG does not point to a valid CommonLibSSE directory (missing CMakeLists.txt)")
+endif()
+
 add_subdirectory("$ENV{CommonLibSSEPath_NG}" CommonLibSSE EXCLUDE_FROM_ALL)
 
 add_subdirectory("${ROOT_DIR}/extern/glm" glm)
